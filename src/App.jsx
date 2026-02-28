@@ -1,8 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function App() {
   const [tarefa, setTarefa] = useState("");
-  const [tarefas, setTarefas] = useState([]);
+  const [tarefas, setTarefas] = useState(() => {
+  const tarefasSalvas = localStorage.getItem("tarefas")
+  return tarefasSalvas ? JSON.parse(tarefasSalvas) : []
+  })
+
+  useEffect(() => {
+    localStorage.setItem("tarefas", JSON.stringify(tarefas))
+  }, [tarefas])
 
   function adicionarTarefa(e) {
     e.preventDefault(); // <-- isso impede o reload
