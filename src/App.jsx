@@ -10,13 +10,21 @@ export default function App() {
     const texto = tarefa.trim();
     if (texto === "") return;
 
-    setTarefas((prev) => [...prev, texto]);
+    setTarefas((prev) => [...prev, { texto, concluida: false }]);
     setTarefa("");
   }
 
   function removerTarefa(indiceParaRemover) {
     setTarefas((prev) => prev.filter((_, index) => index !== indiceParaRemover));
   }
+
+  function alternarConcluida(indice) {
+  setTarefas((prev) =>
+    prev.map((t, index) =>
+      index === indice ? { ...t, concluida: !t.concluida } : t
+    )
+  );
+}
 
   return (
     <div style={{ padding: 16 }}>
@@ -35,7 +43,15 @@ export default function App() {
 
       <ul>
         {tarefas.map((item, index) => (
-          <li key={index}>{item}{" "}<button type="button" onClick={() => removerTarefa(index)}>Remover</button></li>
+        <li key={index} style={{ textDecoration: item.concluida ? "line-through" : "none" }}>
+          {item.texto}{" "}
+          <button type="button" onClick={() => alternarConcluida(index)}>
+            Concluir
+          </button>{" "}
+          <button type="button" onClick={() => removerTarefa(index)}>
+            Remover
+          </button>
+        </li>
         ))}
       </ul>
     </div>
